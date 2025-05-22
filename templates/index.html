@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Optimizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Code Optimizer</h1>
+        <form method="post">
+            <label class="form-label">Enter Your Code:</label>
+            <textarea name="code" class="form-control mb-3" rows="6">{{ input_code }}</textarea>
+
+            <label class="form-label">Select Optimization Techniques:</label><br>
+            {% set options = ["constant_folding", "constant_propagation", "dead_code_elimination", "loop_unrolling"] %}
+            {% for opt in options %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="optimizations" value="{{ opt }}"
+                    {% if opt in selected_opts %}checked{% endif %}>
+                    {{ opt.replace("_", " ").title() }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary mt-3">Optimize</button>
+        </form>
+
+        {% if tac_output %}
+        <hr>
+        <h4>Intermediate Representation (Three-Address Code):</h4>
+        <pre>{{ tac_output }}</pre>
+        {% endif %}
+
+        {% if optimized_code %}
+        <hr>
+        <h4>Optimized Code:</h4>
+        <pre>{{ optimized_code }}</pre>
+        {% endif %}
+
+        {% if suggestion %}
+        <div class="alert alert-info mt-3">
+            <strong>Suggestion:</strong> {{ suggestion }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
